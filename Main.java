@@ -11,6 +11,7 @@ public class Main
         int[] position = getCoordinates(board);
         placeMarker(board, marker, position[0], position[1]);
         printBoard(board);
+        System.out.println(getResult(board, marker));
     }
 
     public static void printBoard(String[][] board)
@@ -38,7 +39,7 @@ public class Main
             stringBoard.append(" |\n");
         }
 
-        stringBoard.append("---------\n");
+        stringBoard.append("---------");
 
         return stringBoard.toString();
     }
@@ -47,15 +48,13 @@ public class Main
     {
         Scanner scanner = new Scanner(System.in);
 
-        System.out.println("Enter the initial state of the board " +
-                "- use X and O to represent marked positions and _ to represent an empty space:");
+        System.out.println("Enter the cells:");
 
         String[] board = scanner.nextLine().split("");
 
         while (!boardIsValid(board))
         {
-            System.out.println("Invalid board! Please enter 9 symbols separated by a space. " +
-                    "Please only use 'X', 'O' or '_' to represent a position on the board:");
+            System.out.println("Invalid board!");
             board = scanner.nextLine().split(" ");
         }
 
@@ -91,21 +90,31 @@ public class Main
     public static int[] getCoordinates(String[][] board)
     {
 
-        System.out.println("Enter the row you wish to place your marker " +
-                "(enter a value in the range 1-3):");
+        System.out.println("Enter the coordinates:");
 
-        int row = getIntegerInput();
+        Scanner scanner = new Scanner(System.in);
 
-        System.out.println("Enter the column you wish to place your marker " +
-                "(enter a value in the range 1-3):");
+        int row = -1;
+        int col = -1;
 
-        int col = getIntegerInput();
-
-        while (!positionIsFree(board, row, col))
+        while (row < 0 || row > 2 || col < 0 || col > 2 || !positionIsFree(board, row, col))
         {
-            System.out.println("That space is occupied! Choose another one!");
-            row = getIntegerInput();
-            col = getIntegerInput();
+            try
+            {
+                row = scanner.nextInt() - 1;
+                col = scanner.nextInt() - 1;
+
+                if (row < 0 || row > 2 || col < 0 || col > 2)
+                {
+                    System.out.println("Coordinates should be from 1 to 3!");
+                } else if (!positionIsFree(board, row, col))
+                    System.out.println("This cell is occupied! Choose another one!");
+            }
+            catch (InputMismatchException e)
+            {
+                System.out.println("You should enter numbers!");
+                scanner.nextLine();
+            }
         }
 
         return new int[] {row, col};
@@ -114,29 +123,6 @@ public class Main
     public static boolean positionIsFree(String[][] board, int row, int col)
     {
         return board[row][col].equals("_");
-    }
-
-    public static int getIntegerInput()
-    {
-        Scanner scanner = new Scanner(System.in);
-
-        int value = -1;
-
-        while (value > 3 || value < 0)
-        {
-            try
-            {
-                value = scanner.nextInt();
-                if (value > 3 || value < 0)
-                    System.out.println("Invalid input! Please enter a number in the range 1-3:");
-            }
-            catch (InputMismatchException e)
-            {
-                System.out.println("Please enter a number!");
-            }
-        }
-
-        return value - 1;
     }
 
     public static String getMarker(String[][] board)
@@ -159,5 +145,70 @@ public class Main
     public static void placeMarker(String[][] board, String marker, int row, int col)
     {
         board[row][col] = marker;
+    }
+
+    public static boolean boardIsFull(String[][] board)
+    {
+        for (int i = 0; i < board.length; i++)
+        {
+            for (int j = 0; j < board[i].length; j++)
+                if (board[i][j].equals("_"))
+                    return false;
+        }
+        return true;
+    }
+
+    public static boolean markerHasWon(String[][] board, String marker)
+    {
+        // check rows
+        for (int i = 0; i < board.length; i++)
+        {
+            int count = 0;
+
+            for (int j = 0; j < board[i].length; j++)
+                if (board[i][j].equals(marker))
+                    count++;
+
+            if (count == 3)
+                return true;
+        }
+
+        // check columns
+        for (int i = 0; i < board.length; i++)
+        {
+            int count = 0;
+
+            for (int j = 0; j < board[i].length; j++)
+                if (board[j][i].equals(marker))
+                    count++;
+
+            if (count == 3)
+                return true;
+        }
+
+        // check diagonals
+        int diag1Count = 0;
+        int diag2Count = 0;
+
+        for (int i = 0; i < board.length; i++) {
+            if (board[i][i].equals(marker))
+                diag1Count++;
+
+            if (board[i][board.length - 1 - i].equals(marker))
+                diag2Count++;
+        }
+
+        return diag1Count == 3 || diag2Count == 3;
+    }
+
+    public static String getResult(String[][] board, String marker)
+    {
+        if (markerHasWon(board, marker))
+            return marker + " wins";
+
+        if (boardIsFull(board))
+            return "Draw";
+
+        return "Game not finished";
     }
 }
