@@ -1,3 +1,4 @@
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class Main
@@ -5,6 +6,10 @@ public class Main
     public static void main(String[] args)
     {
         String[][] board = getBoardState();
+        printBoard(board);
+        String marker = getMarker(board);
+        int[] position = getCoordinates(board);
+        placeMarker(board, marker, position[0], position[1]);
         printBoard(board);
     }
 
@@ -86,10 +91,14 @@ public class Main
     public static int[] getCoordinates(String[][] board)
     {
 
-        System.out.println("Enter coordinates to place your marker " +
-                "(enter the row 1-3 and column 1-3, separated by a space:");
+        System.out.println("Enter the row you wish to place your marker " +
+                "(enter a value in the range 1-3):");
 
         int row = getIntegerInput();
+
+        System.out.println("Enter the column you wish to place your marker " +
+                "(enter a value in the range 1-3):");
+
         int col = getIntegerInput();
 
         while (!positionIsFree(board, row, col))
@@ -111,34 +120,44 @@ public class Main
     {
         Scanner scanner = new Scanner(System.in);
 
-        while (!scanner.hasNextInt())
-            System.out.println("Invalid input! Please enter a number in the range 1-3:");
-
-        int value = scanner.nextInt();
+        int value = -1;
 
         while (value > 3 || value < 0)
         {
-            System.out.println("Invalid input! Please enter a number in the range 1-3:");
-            value = scanner.nextInt();
+            try
+            {
+                value = scanner.nextInt();
+                if (value > 3 || value < 0)
+                    System.out.println("Invalid input! Please enter a number in the range 1-3:");
+            }
+            catch (InputMismatchException e)
+            {
+                System.out.println("Please enter a number!");
+            }
         }
 
-        return scanner.nextInt() - 1;
+        return value - 1;
     }
 
     public static String getMarker(String[][] board)
     {
         int countX = 0;
-        int countY = 0;
+        int countO = 0;
 
         for (int i = 0; i < board.length; i++) {
             for (int j = 0; j < board[i].length; j++) {
                 if (board[i][j].equals("X"))
                     countX++;
-                else if (board[i][j].equals("Y"))
-                    countY++;
+                else if (board[i][j].equals("O"))
+                    countO++;
             }
         }
 
-        return countX == countY ? "X" : "O";
+        return countX == countO ? "X" : "O";
+    }
+
+    public static void placeMarker(String[][] board, String marker, int row, int col)
+    {
+        board[row][col] = marker;
     }
 }
