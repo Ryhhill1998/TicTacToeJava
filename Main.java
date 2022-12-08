@@ -5,13 +5,31 @@ public class Main
 {
     public static void main(String[] args)
     {
-        String[][] board = getBoardState();
-        printBoard(board);
-        String marker = getMarker(board);
-        int[] position = getCoordinates(board);
-        placeMarker(board, marker, position[0], position[1]);
-        printBoard(board);
-        System.out.println(getResult(board, marker));
+        String[][] board = {
+                {"_", "_", "_"},
+                {"_", "_", "_"},
+                {"_", "_", "_"}
+        };
+
+        String playerMarker = "X";
+        String computerMarker = "O";
+
+        while (true)
+        {
+            printBoard(board);
+            int[] playerCoordinates = getPlayerCoordinates(board);
+            placeMarker(board, playerMarker, playerCoordinates[0], playerCoordinates[1]);
+            printBoard(board);
+            if (checkGameOver(board, playerMarker))
+                break;
+
+            int[] computerCoordinates = getComputerCoordinates(board);
+            System.out.println("Making move level \"easy\"");
+            placeMarker(board, computerMarker, computerCoordinates[0], computerCoordinates[1]);
+            printBoard(board);
+            if (checkGameOver(board, computerMarker))
+                break;
+        }
     }
 
     public static void printBoard(String[][] board)
@@ -44,58 +62,17 @@ public class Main
         return stringBoard.toString();
     }
 
-    public static String[][] getBoardState()
-    {
-        Scanner scanner = new Scanner(System.in);
-
-        System.out.println("Enter the cells:");
-
-        String[] board = scanner.nextLine().split("");
-
-        while (!boardIsValid(board))
-        {
-            System.out.println("Invalid board!");
-            board = scanner.nextLine().split(" ");
-        }
-
-        return formatBoard(board);
-    }
-
-    public static String[][] formatBoard(String[] board)
-    {
-        String[][] formattedBoard = new String[3][3];
-
-        for (int i = 0; i < board.length; i++)
-        {
-            int row = i / 3;
-            int col = i % 3;
-            formattedBoard[row][col] = board[i];
-        }
-
-        return formattedBoard;
-    }
-
-    public static boolean boardIsValid(String[] board)
-    {
-        if (board.length != 9)
-            return false;
-
-        for (String symbol : board)
-            if (!symbol.equals("X") && !symbol.equals("O") && !symbol.equals("_"))
-                return false;
-
-        return true;
-    }
-
-    public static int[] getCoordinates(String[][] board)
+    public static int[] getPlayerCoordinates(String[][] board)
     {
 
-        System.out.println("Enter the coordinates:");
+        System.out.print("Enter the coordinates: ");
 
         Scanner scanner = new Scanner(System.in);
 
         int row = -1;
         int col = -1;
+
+        System.out.println();
 
         while (row < 0 || row > 2 || col < 0 || col > 2 || !positionIsFree(board, row, col))
         {
@@ -125,21 +102,18 @@ public class Main
         return board[row][col].equals("_");
     }
 
-    public static String getMarker(String[][] board)
+    public static int[] getComputerCoordinates(String[][] board)
     {
-        int countX = 0;
-        int countO = 0;
+        int row = -1;
+        int col = -1;
 
-        for (int i = 0; i < board.length; i++) {
-            for (int j = 0; j < board[i].length; j++) {
-                if (board[i][j].equals("X"))
-                    countX++;
-                else if (board[i][j].equals("O"))
-                    countO++;
-            }
+        while (row == -1 || col == -1 || !positionIsFree(board, row, col))
+        {
+            row = (int) (Math.random() * 3);
+            col = (int) (Math.random() * 3);
         }
 
-        return countX == countO ? "X" : "O";
+        return new int[]{row, col};
     }
 
     public static void placeMarker(String[][] board, String marker, int row, int col)
@@ -201,14 +175,20 @@ public class Main
         return diag1Count == 3 || diag2Count == 3;
     }
 
-    public static String getResult(String[][] board, String marker)
+    public static boolean checkGameOver(String[][] board, String marker)
     {
         if (markerHasWon(board, marker))
-            return marker + " wins";
+        {
+            System.out.println(marker + " wins");
+            return true;
+        }
 
         if (boardIsFull(board))
-            return "Draw";
+        {
+            System.out.println("Draw");
+            return true;
+        }
 
-        return "Game not finished";
+        return false;
     }
 }
