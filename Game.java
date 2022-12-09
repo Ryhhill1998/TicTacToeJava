@@ -1,21 +1,26 @@
-public abstract class Game {
+public abstract class Game
+{
     Board board;
 
-    public Game() {
+    public Game()
+    {
         board = new Board();
     }
 
     public abstract void playGame();
 
-    public abstract int[] getPlayerCoordinates(Player player);
+    public abstract int[] getCoordinates(Player player);
 
-    public boolean checkGameOver(String marker) {
-        if (board.markerHasWon(marker)) {
+    public boolean checkGameOver(String marker)
+    {
+        if (board.markerHasWon(marker))
+        {
             System.out.println(marker + " wins");
             return true;
         }
 
-        if (board.boardIsFull()) {
+        if (board.boardIsFull())
+        {
             System.out.println("Draw");
             return true;
         }

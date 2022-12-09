@@ -1,6 +1,11 @@
-public class TwoPlayer extends Game {
+import java.util.InputMismatchException;
+import java.util.Scanner;
+
+public class TwoPlayer extends Game
+{
     @Override
-    public void playGame() {
+    public void playGame()
+    {
         Player player1 = new Player("X");
         Player player2 = new Player("O");
         Player turn = player1;
@@ -9,34 +14,49 @@ public class TwoPlayer extends Game {
 
         board.printGameBoard();
 
-        while (true) {
-            int[] coordinates = getPlayerCoordinates(turn);
+        while (true)
+        {
+            int[] coordinates = getCoordinates(turn);
             board.placeMarker(turn.getMarker(), coordinates[0], coordinates[1]);
             board.printGameBoard();
 
-            if (checkGameOver(turn.getMarker())) {
+            if (checkGameOver(turn.getMarker()))
                 break;
-            }
 
-            if (turn == player1) {
+            if (turn == player1)
                 turn = player2;
-            }
-            else {
+            else
                 turn = player1;
-            }
         }
     }
 
     @Override
-    public int[] getPlayerCoordinates(Player player) {
+    public int[] getCoordinates(Player player) {
+
+        System.out.print("Enter the coordinates: ");
+
+        Scanner scanner = new Scanner(System.in);
 
         int[] coordinates = {-1, -1};
 
-        while (coordinates[0] == -1 || coordinates[1] == -1 || !board.positionIsFree(coordinates)) {
-            coordinates = player.getCoordinates();
+        System.out.println();
 
-            if (!board.positionIsFree(coordinates)) {
-                System.out.println("This cell is occupied! Choose another one!");
+        while (coordinates[0] < 1 || coordinates[0] > 3 || coordinates[1] < 1 || coordinates[1] > 3
+                || !board.positionIsFree(coordinates)) {
+            try
+            {
+                coordinates = new int[]{scanner.nextInt() - 1, scanner.nextInt() - 1};
+
+                if (coordinates[0] < 1 || coordinates[0] > 3 || coordinates[1] < 1 || coordinates[1] > 3) {
+                    System.out.println("Coordinates should be from 1 to 3!");
+                } else if (!board.positionIsFree(coordinates)) {
+                    System.out.println("This cell is occupied! Choose another one!");
+                }
+            }
+            catch (InputMismatchException e)
+            {
+                System.out.println("You should enter numbers!");
+                scanner.nextLine();
             }
         }
 
