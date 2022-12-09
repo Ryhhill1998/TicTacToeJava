@@ -1,11 +1,9 @@
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
-public class TwoPlayer extends Game
-{
+public class TwoPlayer extends Game {
     @Override
-    public void playGame()
-    {
+    public void playGame() {
         Player player1 = new Player("X");
         Player player2 = new Player("O");
         Player turn = player1;
@@ -14,19 +12,20 @@ public class TwoPlayer extends Game
 
         board.printGameBoard();
 
-        while (true)
-        {
+        while (true) {
             int[] coordinates = getCoordinates(turn);
             board.placeMarker(turn.getMarker(), coordinates[0], coordinates[1]);
             board.printGameBoard();
 
-            if (checkGameOver(turn.getMarker()))
-                break;
-
-            if (turn == player1)
-                turn = player2;
-            else
+            if (checkGameOver(turn.getMarker())) {
                 turn = player1;
+            }
+
+            if (turn == player1) {
+                turn = player2;
+            } else {
+                turn = player1;
+            }
         }
     }
 
@@ -43,8 +42,7 @@ public class TwoPlayer extends Game
 
         while (coordinates[0] < 1 || coordinates[0] > 3 || coordinates[1] < 1 || coordinates[1] > 3
                 || !board.positionIsFree(coordinates)) {
-            try
-            {
+            try {
                 coordinates = new int[]{scanner.nextInt() - 1, scanner.nextInt() - 1};
 
                 if (coordinates[0] < 1 || coordinates[0] > 3 || coordinates[1] < 1 || coordinates[1] > 3) {
@@ -52,9 +50,7 @@ public class TwoPlayer extends Game
                 } else if (!board.positionIsFree(coordinates)) {
                     System.out.println("This cell is occupied! Choose another one!");
                 }
-            }
-            catch (InputMismatchException e)
-            {
+            } catch (InputMismatchException e) {
                 System.out.println("You should enter numbers!");
                 scanner.nextLine();
             }

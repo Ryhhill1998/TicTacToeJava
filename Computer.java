@@ -1,15 +1,22 @@
-public class Computer extends Player
-{
+public class Computer extends Player {
+
+    private static final int EXCLUSIVE_MAX = 3;
+    private static final int INCLUSIVE_MAX = 2;
+    private static final int INCLUSIVE_MIN = 0;
+    private static final int DEFAULT_COORDINATE = -1;
+    private static final int EASY_LEVEL = 0;
+    private static final int MEDIUM_LEVEL = 1;
+    private static final String MARKER_X = "X";
+    private static final String MARKER_O = "O";
     int level;
 
-    public Computer(String marker, int level)
-    {
+    public Computer(String marker, int level) {
         super(marker);
         this.level = level;
     }
 
     public String getLevelDescription() {
-        if (level == 0) {
+        if (level == EASY_LEVEL) {
             return "easy";
         }
 
@@ -17,121 +24,46 @@ public class Computer extends Player
     }
 
     public int[] getCoordinates(Board board) {
-        if (level == 0) {
-            return getCoordinatesEasy();
+        if (level == EASY_LEVEL) {
+            return getCoordinatesEasy(board);
         }
 
-        if (level == 1) {
-            int[] coordinates = getCoordinatesMedium(marker, board);
-            if (coordinates != null) {
-                return coordinates;
-            }
-
-            if (marker.equals("X")) {
-                coordinates = getCoordinatesMedium("O", board);
-            } else {
-                coordinates = getCoordinatesMedium("X", board);
-            }
-
-            if (coordinates != null) {
-                return coordinates;
-            }
-
-            return getCoordinatesEasy();
-        }
-
-        return null;
+        return getCoordinatesMedium(board);
     }
 
-    public int[] getCoordinatesEasy() {
-        int row = (int) (Math.random() * 3);
-        int col = (int) (Math.random() * 3);
+    public int[] getCoordinatesEasy(Board board) {
+        int[] coordinates = {DEFAULT_COORDINATE, DEFAULT_COORDINATE};
 
-        return new int[]{row, col};
+        while (coordinates[0] < INCLUSIVE_MIN || coordinates[0] > INCLUSIVE_MAX
+                || coordinates[1] < INCLUSIVE_MIN || coordinates[1] > INCLUSIVE_MAX
+                || !board.positionIsFree(coordinates)) {
+            coordinates = new int[]{getRandomCoordinate(), getRandomCoordinate()};
+        }
+
+        return coordinates;
     }
 
-    public int[] getCoordinatesMedium(String marker, Board board) {
-        String[][] gameBoard = board.getGameBoard();
+    private static int getRandomCoordinate() {
+        return (int) (Math.random() * EXCLUSIVE_MAX);
+    }
 
-        // check rows for 2 of marker
-        for (int i = 0; i < gameBoard.length; i++) {
-            int[] freeSpace = null;
-            int count = 0;
+    public int[] getCoordinatesMedium(Board board) {
+        int[] coordinates = board.findCoordinatesToWin(marker);
 
-            for (int j = 0; j < gameBoard[i].length; j++) {
-                if (gameBoard[i][j].equals(marker)) {
-                    count++;
-                } else {
-                    int[] space = {i, j};
-                    if (board.positionIsFree(space)) {
-                        freeSpace = space;
-                    }
-                }
-            }
-
-            if (count == 2) {
-                return freeSpace;
-            }
+        if (coordinates != null) {
+            return coordinates;
         }
 
-        // check cols for 2 of marker
-        for (int i = 0; i < gameBoard.length; i++) {
-            int[] freeSpace = null;
-            int count = 0;
-
-            for (int j = 0; j < gameBoard[i].length; j++) {
-                int[] space = {j, i};
-                if (board.positionIsFree(space)) {
-                    freeSpace = space;
-                }
-                if (gameBoard[j][i].equals(marker)) {
-                    count++;
-                }
-            }
-
-            if (count == 2) {
-                return freeSpace;
-            }
+        if (marker.equals(MARKER_X)) {
+            coordinates = board.findCoordinatesToWin(MARKER_O);
+        } else {
+            coordinates = board.findCoordinatesToWin(MARKER_X);
         }
 
-        // check diag for 2 of marker
-        int[] freeSpace = null;
-        int count = 0;
-
-        for (int i = 0; i < gameBoard.length; i++) {
-            if (gameBoard[i][i].equals(marker)) {
-                count++;
-            } else {
-                int[] space = {i, i};
-
-                if (board.positionIsFree(space)) {
-                    freeSpace = space;
-                }
-            }
+        if (coordinates != null) {
+            return coordinates;
         }
 
-        if (count == 2) {
-            return freeSpace;
-        }
-
-        count = 0;
-
-        for (int i = 0; i < gameBoard.length; i++) {
-            if (gameBoard[i][gameBoard.length - 1 - i].equals(marker)) {
-                count++;
-            } else {
-                int[] space = {i, gameBoard.length - 1 - i};
-
-                if (board.positionIsFree(space)) {
-                    freeSpace = space;
-                }
-            }
-        }
-
-        if (count == 2) {
-            return freeSpace;
-        }
-
-        return null;
+        return getCoordinatesEasy(board);
     }
 }

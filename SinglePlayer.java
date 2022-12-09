@@ -15,8 +15,7 @@ public class SinglePlayer extends Game {
 
         if (playerMarker.equals("X")) {
             turn = player;
-        }
-        else {
+        } else {
             turn = computer;
         }
 
@@ -32,10 +31,11 @@ public class SinglePlayer extends Game {
             if (checkGameOver(turn.getMarker()))
                 break;
 
-            if (turn == player)
+            if (turn == player) {
                 turn = computer;
-            else
+            } else {
                 turn = player;
+            }
         }
     }
 
@@ -87,26 +87,13 @@ public class SinglePlayer extends Game {
 
     @Override
     public int[] getCoordinates(Player player) {
-        int[] coordinates = {-1, -1};
-
-        boolean playerIsComputer = false;
-
         if (player instanceof Computer) {
             System.out.println("Making move level \"" + ((Computer) player).getLevelDescription() + "\"");
-            playerIsComputer = true;
+            Computer computer = (Computer) player;
+            return computer.getCoordinates(board);
         }
 
-        while (coordinates[0] == -1 || coordinates[1] == -1 || !board.positionIsFree(coordinates)) {
-            if (playerIsComputer) {
-                Computer computer = (Computer) player;
-                coordinates = computer.getCoordinates(board);
-            }
-            else {
-                coordinates = getPlayerCoordinates();
-            }
-        }
-
-        return coordinates;
+        return getPlayerCoordinates();
     }
 
     public int[] getPlayerCoordinates() {
