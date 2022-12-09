@@ -1,14 +1,11 @@
-public class Computer extends Player
-{
+public class Computer extends Player {
 
-    public Computer(String marker)
-    {
+    public Computer(String marker) {
         super(marker);
     }
 
     @Override
-    public int[] getCoordinates()
-    {
+    public int[] getCoordinates() {
         int row = (int) (Math.random() * 3);
         int col = (int) (Math.random() * 3);
 

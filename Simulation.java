@@ -1,8 +1,7 @@
-public class Simulation extends Game
-{
+public class Simulation extends Game {
+
     @Override
-    public void playGame()
-    {
+    public void playGame() {
         Computer computer1 = new Computer("X");
         Computer computer2 = new Computer("O");
 
@@ -12,30 +11,32 @@ public class Simulation extends Game
 
         board.printGameBoard();
 
-        while (true)
-        {
+        while (true) {
             int[] coordinates = getPlayerCoordinates(turn);
             board.placeMarker(turn.getMarker(), coordinates[0], coordinates[1]);
             board.printGameBoard();
 
-            if (checkGameOver(turn.getMarker()))
+            if (checkGameOver(turn.getMarker())) {
                 break;
+            }
 
-            if (turn == computer1)
+            if (turn == computer1) {
                 turn = computer2;
-            else
+            }
+            else {
                 turn = computer1;
+            }
         }
     }
 
     @Override
-    public int[] getPlayerCoordinates(Player player)
-    {
+    public int[] getPlayerCoordinates(Player player) {
         Computer computer = (Computer) player;
         int[] coordinates = computer.getCoordinates();
 
-        while (!board.positionIsFree(coordinates))
+        while (!board.positionIsFree(coordinates)) {
             coordinates = computer.getCoordinates();
+        }
 
         return coordinates;
     }

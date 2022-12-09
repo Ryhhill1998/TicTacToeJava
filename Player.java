@@ -1,22 +1,18 @@
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
-public class Player
-{
+public class Player {
     String marker;
 
-    public Player(String marker)
-    {
+    public Player(String marker) {
         this.marker = marker;
     }
 
-    public String getMarker()
-    {
+    public String getMarker() {
         return marker;
     }
 
-    public int[] getCoordinates()
-    {
+    public int[] getCoordinates() {
         System.out.print("Enter the coordinates: ");
 
         Scanner scanner = new Scanner(System.in);
@@ -26,18 +22,16 @@ public class Player
 
         System.out.println();
 
-        while (row < 0 || row > 2 || col < 0 || col > 2)
-        {
-            try
-            {
+        while (row < 0 || row > 2 || col < 0 || col > 2) {
+            try {
                 row = scanner.nextInt() - 1;
                 col = scanner.nextInt() - 1;
 
-                if (row < 0 || row > 2 || col < 0 || col > 2)
+                if (row < 0 || row > 2 || col < 0 || col > 2) {
                     System.out.println("Coordinates should be from 1 to 3!");
+                }
             }
-            catch (InputMismatchException e)
-            {
+            catch (InputMismatchException e) {
                 System.out.println("You should enter numbers!");
                 scanner.nextLine();
             }
