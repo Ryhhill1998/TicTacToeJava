@@ -1,5 +1,5 @@
 public class Board {
-    String[][] gameBoard;
+    private String[][] gameBoard;
 
     public Board() {
         initialiseGameBoard();

@@ -29,8 +29,9 @@ public class SinglePlayer extends Game {
             board.placeMarker(turn.getMarker(), coordinates[0], coordinates[1]);
             board.printGameBoard();
 
-            if (checkGameOver(turn.getMarker()))
+            if (checkGameOver(turn.getMarker())) {
                 break;
+            }
 
             if (turn == player) {
                 turn = computer;

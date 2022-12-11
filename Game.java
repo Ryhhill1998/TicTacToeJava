@@ -1,5 +1,5 @@
 public abstract class Game {
-    Board board;
+    public Board board;
 
     public Game() {
         board = new Board();
