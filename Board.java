@@ -128,7 +128,7 @@ public class Board {
                 }
             }
 
-            if (count == 2) {
+            if (count == 2 && freeSpace != null) {
                 return freeSpace;
             }
         }
@@ -148,7 +148,7 @@ public class Board {
                 }
             }
 
-            if (count == 2) {
+            if (count == 2 && freeSpace != null) {
                 return freeSpace;
             }
         }
@@ -169,7 +169,7 @@ public class Board {
             }
         }
 
-        if (count == 2) {
+        if (count == 2 && freeSpace != null) {
             return freeSpace;
         }
 
@@ -188,7 +188,7 @@ public class Board {
             }
         }
 
-        if (count == 2) {
+        if (count == 2 && freeSpace != null) {
             return freeSpace;
         }
 

@@ -1,3 +1,5 @@
+import java.util.Arrays;
+
 public class Computer extends Player {
 
     private static final int EXCLUSIVE_MAX = 3;
@@ -25,6 +27,7 @@ public class Computer extends Player {
 
     public int[] getCoordinates(Board board) {
         if (level == EASY_LEVEL) {
+            System.out.println("EASY LEVEL");
             return getCoordinatesEasy(board);
         }
 
@@ -48,19 +51,21 @@ public class Computer extends Player {
     }
 
     public int[] getCoordinatesMedium(Board board) {
-        int[] coordinates = board.findCoordinatesToWin(marker);
+        int[] coordinates = board.findCoordinatesToWin(getMarker());
 
         if (coordinates != null) {
+            System.out.println(Arrays.toString(coordinates));
             return coordinates;
         }
 
-        if (marker.equals(MARKER_X)) {
+        if (getMarker().equals(MARKER_X)) {
             coordinates = board.findCoordinatesToWin(MARKER_O);
         } else {
             coordinates = board.findCoordinatesToWin(MARKER_X);
         }
 
         if (coordinates != null) {
+            System.out.println(Arrays.toString(coordinates));
             return coordinates;
         }
 
