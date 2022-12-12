@@ -1,5 +1,3 @@
-import java.util.Arrays;
-
 public class Computer extends Player {
 
     private static final int EXCLUSIVE_MAX = 3;
@@ -54,7 +52,6 @@ public class Computer extends Player {
         int[] coordinates = board.findCoordinatesToWin(getMarker());
 
         if (coordinates != null) {
-            System.out.println(Arrays.toString(coordinates));
             return coordinates;
         }
 
@@ -65,7 +62,6 @@ public class Computer extends Player {
         }
 
         if (coordinates != null) {
-            System.out.println(Arrays.toString(coordinates));
             return coordinates;
         }
 

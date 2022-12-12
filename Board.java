@@ -19,26 +19,26 @@ public class Board {
 
     public String stringifyBoard() {
         StringBuilder stringBoard = new StringBuilder();
-        stringBoard.append("---------\n");
+        stringBoard.append("+---+---+---+\n");
 
         for (int i = 0; i < gameBoard.length; i++) {
             stringBoard.append("|");
 
             for (int j = 0; j < gameBoard[i].length; j++) {
-                stringBoard.append(" ");
                 String symbol = gameBoard[i][j];
+                stringBoard.append(" ");
 
                 if (symbol.equals("_")) {
                     stringBoard.append(" ");
                 } else {
                     stringBoard.append(symbol);
                 }
+
+                stringBoard.append(" |");
             }
 
-            stringBoard.append(" |\n");
+            stringBoard.append("\n+---+---+---+\n");
         }
-
-        stringBoard.append("---------");
 
         return stringBoard.toString();
     }
