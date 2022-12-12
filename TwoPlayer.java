@@ -5,8 +5,6 @@ public class TwoPlayer extends Game {
         Player player2 = new Player("O");
         Player turn = player1;
 
-        System.out.println();
-
         board.printGameBoard();
 
         while (true) {
@@ -28,6 +26,6 @@ public class TwoPlayer extends Game {
 
     @Override
     public int[] getCoordinates(Player player) {
-        return player.getCoordinates(board);
+        return PlayerIO.getCoordinates(board);
     }
 }

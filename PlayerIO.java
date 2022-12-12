@@ -1,7 +1,7 @@
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
-public class PlayerIO {
+public abstract class PlayerIO {
 
     public static String getPlayerMarker() {
         Scanner scanner = new Scanner(System.in);

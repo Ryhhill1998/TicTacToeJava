@@ -1,7 +1,7 @@
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
-public class ComputerIO {
+public abstract class ComputerIO {
 
     public static int getComputerLevel() {
         int level = -1;
@@ -29,5 +29,9 @@ public class ComputerIO {
         System.out.println();
 
         return level;
+    }
+
+    public static void printComputerLevel(Computer computer) {
+        System.out.println("Making move level \"" + computer.getLevelDescription() + "\"");
     }
 }
