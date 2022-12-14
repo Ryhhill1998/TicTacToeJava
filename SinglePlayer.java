@@ -1,6 +1,18 @@
 import java.util.Scanner;
 
 public class SinglePlayer extends Game {
+
+    private String type;
+
+    public SinglePlayer(String type) {
+        super();
+        this.type = type;
+    }
+
+    public SinglePlayer() {
+        super();
+    }
+
     @Override
     public void playGame() {
         String playerMarker = PlayerIO.getPlayerMarker();
@@ -33,13 +45,10 @@ public class SinglePlayer extends Game {
                 break;
             }
 
-            if (turn == player) {
-                turn = computer;
-            } else {
-                turn = player;
-            }
+            turn = changeTurn(turn, player, computer);
         }
 
+        turn = changeTurn(turn, player, computer);
         getReasonForComputerMove(computer, player, turn, board);
     }
 
@@ -59,12 +68,22 @@ public class SinglePlayer extends Game {
     }
 
     public void getReasonForComputerMove(Computer computer, Player player, Player turn, Board board) {
+        if (type == null) return;
+
         if (turn == player && !board.isEmpty()) {
             System.out.print("Enter Y to get reason for the computer's move or any other key to continue: ");
             Scanner scan = new Scanner(System.in);
             if (scan.nextLine().equalsIgnoreCase("Y")) {
                 ComputerIO.displayReasonForMove(computer);
             }
+        }
+    }
+
+    public Player changeTurn(Player turn, Player player, Computer computer) {
+        if (turn == player) {
+            return computer;
+        } else {
+            return player;
         }
     }
 }
