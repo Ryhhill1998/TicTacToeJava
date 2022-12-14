@@ -17,6 +17,21 @@ public class Board {
         System.out.println(stringifyBoard());
     }
 
+    public boolean isEmpty() {
+        boolean empty = true;
+
+        for (int i = 0; i < gameBoard.length; i++) {
+            for (int j = 0; j < gameBoard[i].length; j++) {
+                if (!gameBoard[i][j].equals("_")) {
+                    empty = false;
+                    break;
+                }
+            }
+        }
+
+        return empty;
+    }
+
     public String stringifyBoard() {
         StringBuilder stringBoard = new StringBuilder();
         stringBoard.append("+---+---+---+\n");

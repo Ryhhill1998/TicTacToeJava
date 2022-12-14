@@ -34,4 +34,8 @@ public abstract class ComputerIO {
     public static void printComputerLevel(Computer computer) {
         System.out.println("Making move level \"" + computer.getLevelDescription() + "\"");
     }
+
+    public static void displayReasonForMove(Computer computer) {
+        System.out.println(computer.getReasonForMove());
+    }
 }
