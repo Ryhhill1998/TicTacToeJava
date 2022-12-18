@@ -15,7 +15,6 @@ public class Main {
                 "\n\ta - Two player" +
                 "\n\tb - Single player" +
                 "\n\tc - Simulation" +
-                "\n\tx - Single player with explanations" +
                 "\n\tq - Quit\n");
     }
 
@@ -37,10 +36,6 @@ public class Main {
             case "c":
                 // simulation game
                 game = new Simulation();
-                break;
-            case "x":
-                // simulation game
-                game = new SinglePlayer("x");
                 break;
             case "q":
                 // quit

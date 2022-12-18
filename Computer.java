@@ -13,8 +13,6 @@ public class Computer extends Player {
     private String playerMarker;
     private static final int infinity = (int) Double.POSITIVE_INFINITY;
 
-    private String reasonForMove;
-
     public Computer(String marker, int level) {
         super(marker);
         playerMarker = getMarker().equals("X") ? "O" : "X";
@@ -42,14 +40,6 @@ public class Computer extends Player {
         return getCoordinatesMedium(board);
     }
 
-    public String getReasonForMove() {
-        return reasonForMove;
-    }
-
-    public void setReasonForMove(String reasonForMove) {
-        this.reasonForMove = reasonForMove;
-    }
-
     public int[] getCoordinatesEasy(Board board) {
         int[] coordinates = {DEFAULT_COORDINATE, DEFAULT_COORDINATE};
 
@@ -58,8 +48,6 @@ public class Computer extends Player {
                 || !board.positionIsFree(coordinates)) {
             coordinates = new int[]{getRandomCoordinate(), getRandomCoordinate()};
         }
-
-        setReasonForMove("It was a random move.");
 
         return coordinates;
     }
@@ -72,7 +60,6 @@ public class Computer extends Player {
         int[] coordinates = board.findCoordinatesToWin(getMarker());
 
         if (coordinates != null) {
-            setReasonForMove("To win the game.");
             return coordinates;
         }
 
@@ -83,7 +70,6 @@ public class Computer extends Player {
         }
 
         if (coordinates != null) {
-            setReasonForMove("To prevent the player from winning.");
             return coordinates;
         }
 
